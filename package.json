@@ -1,0 +1,32 @@
+{
+  "name": "@sandom/font-metrics",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "license": "Apache-2.0",
+  "description": "Bounded OpenType font metric extraction for WebAssembly consumers.",
+  "exports": {
+    "./font-metrics.wasm": "./dist/font-metrics.wasm",
+    "./font-metrics.wat": "./dist/font-metrics.wat",
+    "./font-metrics.build.json": "./dist/font-metrics.build.json",
+    "./font-metrics.manifest.json": "./src/font-metrics.manifest.json",
+    "./watpart/*": "./src/*.watpart"
+  },
+  "files": [
+    "dist/font-metrics.wasm",
+    "dist/font-metrics.wat",
+    "dist/font-metrics.build.json",
+    "src/*.watpart",
+    "src/font-metrics.manifest.json",
+    "docs",
+    "README.md",
+    "DESIGN.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "publishConfig": { "access": "public" },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fernandoviac/sandom-font-metrics.git"
+  }
+}

@@ -1,0 +1,156 @@
+{
+  "kind": "sandom/font-metrics-malformed-fixtures",
+  "provenance": "Hand patches against repository-owned minimal OpenType fixtures; offsets follow OpenType table records.",
+  "cases": [
+    {
+      "name": "short directory",
+      "base": "metrics.ttf",
+      "patches": [
+        {
+          "offset": 4,
+          "hex": "0007"
+        }
+      ],
+      "error": 4,
+      "length": 12
+    },
+    {
+      "name": "table span past end",
+      "base": "metrics.ttf",
+      "patches": [
+        {
+          "offset": 20,
+          "hex": "fffffff0"
+        }
+      ],
+      "error": 4
+    },
+    {
+      "name": "missing head",
+      "base": "metrics.ttf",
+      "patches": [
+        {
+          "offset": 12,
+          "hex": "78787878"
+        }
+      ],
+      "error": 3,
+      "field": 1751474532
+    },
+    {
+      "name": "missing hhea",
+      "base": "metrics.ttf",
+      "patches": [
+        {
+          "offset": 28,
+          "hex": "78787878"
+        }
+      ],
+      "error": 3,
+      "field": 1751672161
+    },
+    {
+      "name": "missing post",
+      "base": "metrics.ttf",
+      "patches": [
+        {
+          "offset": 44,
+          "hex": "78787878"
+        }
+      ],
+      "error": 3,
+      "field": 1886352244
+    },
+    {
+      "name": "missing OS/2",
+      "base": "metrics.ttf",
+      "patches": [
+        {
+          "offset": 60,
+          "hex": "78787878"
+        }
+      ],
+      "error": 3,
+      "field": 1330851634
+    },
+    {
+      "name": "missing cmap",
+      "base": "metrics.ttf",
+      "patches": [
+        {
+          "offset": 76,
+          "hex": "78787878"
+        }
+      ],
+      "error": 3,
+      "field": 1668112752
+    },
+    {
+      "name": "missing hmtx",
+      "base": "metrics.ttf",
+      "patches": [
+        {
+          "offset": 92,
+          "hex": "78787878"
+        }
+      ],
+      "error": 3,
+      "field": 1752003704
+    },
+    {
+      "name": "short head table",
+      "base": "metrics.ttf",
+      "patches": [
+        {
+          "offset": 24,
+          "hex": "0000000a"
+        }
+      ],
+      "error": 4
+    },
+    {
+      "name": "zero unitsPerEm",
+      "base": "metrics.ttf",
+      "patches": [
+        {
+          "offset": 126,
+          "hex": "0000"
+        }
+      ],
+      "error": 4
+    },
+    {
+      "name": "zero numberOfHMetrics",
+      "base": "metrics.ttf",
+      "patches": [
+        {
+          "offset": 162,
+          "hex": "0000"
+        }
+      ],
+      "error": 4
+    },
+    {
+      "name": "odd format 4 segCountX2",
+      "base": "format4.ttf",
+      "patches": [
+        {
+          "offset": 286,
+          "hex": "0003"
+        }
+      ],
+      "error": 4
+    },
+    {
+      "name": "format 12 groups past length",
+      "base": "metrics.ttf",
+      "patches": [
+        {
+          "offset": 292,
+          "hex": "00000002"
+        }
+      ],
+      "error": 4
+    }
+  ]
+}

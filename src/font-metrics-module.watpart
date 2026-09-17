@@ -1,0 +1,29 @@
+(memory $fm_memory (export "memory") 2 4096)
+(global $fm_heap (mut i32) (i32.const 65536))
+
+(func $font_metrics_alloc (export "font_metrics_alloc") (param $size i32) (result i32)
+  (local $bytes i64) (local $end i64) (local $pages i64)
+  (local $delta i32) (local $pointer i32)
+  (global.set $fm_error (i32.const 0))
+  (global.set $fm_field (i32.const 0))
+  (if (i32.le_s (local.get $size) (i32.const 0))
+    (then (return (call $fm_fail (i32.const 6) (local.get $size)))))
+  (local.set $bytes
+    (i64.and (i64.add (i64.extend_i32_u (local.get $size)) (i64.const 7))
+             (i64.const -8)))
+  (local.set $pointer (global.get $fm_heap))
+  (local.set $end
+    (i64.add (i64.extend_i32_u (local.get $pointer)) (local.get $bytes)))
+  (if (i64.gt_u (local.get $end) (i64.const 268435456))
+    (then (return (call $fm_fail (i32.const 6) (local.get $size)))))
+  (if (i64.gt_u (local.get $end)
+                 (i64.shl (i64.extend_i32_u (memory.size)) (i64.const 16)))
+    (then
+      (local.set $pages
+        (i64.shr_u (i64.add (local.get $end) (i64.const 65535)) (i64.const 16)))
+      (local.set $delta
+        (i32.sub (i32.wrap_i64 (local.get $pages)) (memory.size)))
+      (if (i32.eq (memory.grow (local.get $delta)) (i32.const -1))
+        (then (return (call $fm_fail (i32.const 6) (local.get $size)))))))
+  (global.set $fm_heap (i32.wrap_i64 (local.get $end)))
+  (local.get $pointer))

@@ -1,0 +1,23 @@
+(global $fm_error (mut i32) (i32.const 0))
+(global $fm_field (mut i32) (i32.const 0))
+
+(func $fm_span (param $ptr i32) (param $len i32) (result i32)
+  (local $end i64)
+  (if (i32.or (i32.lt_s (local.get $ptr) (i32.const 0))
+              (i32.lt_s (local.get $len) (i32.const 0)))
+    (then (return (i32.const 0))))
+  (local.set $end
+    (i64.add (i64.extend_i32_u (local.get $ptr))
+             (i64.extend_i32_u (local.get $len))))
+  (i64.le_u (local.get $end)
+            (i64.shl (i64.extend_i32_u (memory.size)) (i64.const 16))))
+
+(func $fm_fail (param $code i32) (param $field i32) (result i32)
+  (global.set $fm_error (local.get $code))
+  (global.set $fm_field (local.get $field))
+  (local.get $code))
+
+(func $font_metrics_error_code (export "font_metrics_error_code") (result i32)
+  (global.get $fm_error))
+(func $font_metrics_error_field (export "font_metrics_error_field") (result i32)
+  (global.get $fm_field))
