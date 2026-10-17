@@ -6,7 +6,8 @@
     "components": [
       "font-metrics-runtime.watpart",
       "font-metrics-abi.watpart",
-      "font-metrics-reader.watpart"
+      "font-metrics-reader.watpart",
+      "font-metrics-math.watpart"
     ],
     "scratchBytes": 0,
     "requires": ["memory"]
@@ -15,6 +16,7 @@
     "font-metrics-module.watpart",
     "font-metrics-runtime.watpart",
     "font-metrics-abi.watpart",
-    "font-metrics-reader.watpart"
+    "font-metrics-reader.watpart",
+    "font-metrics-math.watpart"
   ]
 }

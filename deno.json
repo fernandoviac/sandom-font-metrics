@@ -1,7 +1,7 @@
 {
   "fmt": { "exclude": ["."] },
   "name": "@sandom/font-metrics",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "exports": "./dist/font-metrics.wasm",
   "imports": {
     "@std/assert": "jsr:@std/assert@1"

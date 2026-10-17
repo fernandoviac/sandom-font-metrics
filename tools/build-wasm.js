@@ -41,7 +41,7 @@ if (
   JSON.stringify(manifest.embeddable?.requires) !==
     JSON.stringify(["memory"]) ||
   manifest.embeddable?.scratchBytes !== 0 ||
-  !Array.isArray(manifest.components) || manifest.components.length !== 4
+  !Array.isArray(manifest.components) || manifest.components.length !== 5
 ) throw new Error("Invalid font-metrics WebAssembly source manifest");
 const seen = new Set();
 const componentRecords = [];

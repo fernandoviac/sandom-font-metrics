@@ -1,0 +1,1 @@
+{"kind":"sandom/font-metrics-math-fixture","decoder":"HarfBuzz 14.4.0 hb-ot-math, scale = units per em, ppem 0","font":"metrics.ttf","sha256":"7c9c9a13a8b1117eef02fa12f42989db3dc2f1ea9f1d4db9ca022da6e1caeff0","source":"repository-owned minimal OpenType fixture without a MATH table","license":"repository","upem":1000,"glyphCount":0,"hasMath":false}

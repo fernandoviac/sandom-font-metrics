@@ -861,6 +861,43 @@
       (br $records)))
   (i64.const 0))
 
+;; Resolves the sfnt header of the requested face. On failure the error code
+;; and field are set and the returned pointer is meaningless.
+(func $fm_select_face (param $font i32) (param $flen i32) (param $face i32)
+  (result i32)
+  (local $off i32)
+  (if (i32.lt_u (local.get $flen) (i32.const 4))
+    (then (drop (call $fm_fail (i32.const 4) (i32.const 0)))
+          (return (i32.const 0))))
+  (if (i32.ne (call $fm_be32 (local.get $font)) (i32.const 1953784678))
+    (then
+      (if (i32.ne (local.get $face) (i32.const 0))
+        (then (drop (call $fm_fail (i32.const 2) (local.get $face)))))
+      (return (local.get $font))))
+  (if (i32.lt_u (local.get $flen) (i32.const 12))
+    (then (drop (call $fm_fail (i32.const 4) (i32.const 0)))
+          (return (i32.const 0))))
+  (local.set $off (call $fm_be32 (i32.add (local.get $font) (i32.const 8))))
+  (if (i32.or (i32.lt_s (local.get $face) (i32.const 0))
+              (i32.ge_u (local.get $face) (local.get $off)))
+    (then (drop (call $fm_fail (i32.const 2) (local.get $face)))
+          (return (i32.const 0))))
+  (if (i64.gt_u
+        (i64.add (i64.const 12)
+                 (i64.mul (i64.extend_i32_u (local.get $off)) (i64.const 4)))
+        (i64.extend_i32_u (local.get $flen)))
+    (then (drop (call $fm_fail (i32.const 4) (i32.const 8)))
+          (return (i32.const 0))))
+  (local.set $off
+    (call $fm_be32
+      (i32.add (i32.add (local.get $font) (i32.const 12))
+               (i32.mul (local.get $face) (i32.const 4)))))
+  (if (i64.gt_u (i64.add (i64.extend_i32_u (local.get $off)) (i64.const 12))
+                (i64.extend_i32_u (local.get $flen)))
+    (then (drop (call $fm_fail (i32.const 4) (local.get $off)))
+          (return (i32.const 0))))
+  (i32.add (local.get $font) (local.get $off)))
+
 (func $font_metrics_read (export "font_metrics_read")
   (param $font i32) (param $flen i32) (param $face i32) (param $groups i32) (param $result i32)
   (result i32)
@@ -878,33 +915,10 @@
     (then (return (call $fm_fail (i32.const 1) (local.get $font)))))
   (if (i32.ne (i32.and (local.get $groups) (i32.const -8)) (i32.const 0))
     (then (return (call $fm_fail (i32.const 5) (local.get $groups)))))
-  (if (i32.lt_u (local.get $flen) (i32.const 4))
-    (then (return (call $fm_fail (i32.const 4) (i32.const 0)))))
-  (if (i32.eq (call $fm_be32 (local.get $font)) (i32.const 1953784678))
-    (then
-      (if (i32.lt_u (local.get $flen) (i32.const 12))
-        (then (return (call $fm_fail (i32.const 4) (i32.const 0)))))
-      (local.set $off (call $fm_be32 (i32.add (local.get $font) (i32.const 8))))
-      (if (i32.or (i32.lt_s (local.get $face) (i32.const 0))
-                  (i32.ge_u (local.get $face) (local.get $off)))
-        (then (return (call $fm_fail (i32.const 2) (local.get $face)))))
-      (if (i64.gt_u
-            (i64.add (i64.const 12)
-                     (i64.mul (i64.extend_i32_u (local.get $off)) (i64.const 4)))
-            (i64.extend_i32_u (local.get $flen)))
-        (then (return (call $fm_fail (i32.const 4) (i32.const 8)))))
-      (local.set $off
-        (call $fm_be32
-          (i32.add (i32.add (local.get $font) (i32.const 12))
-                   (i32.mul (local.get $face) (i32.const 4)))))
-      (if (i64.gt_u (i64.add (i64.extend_i32_u (local.get $off)) (i64.const 12))
-                        (i64.extend_i32_u (local.get $flen)))
-        (then (return (call $fm_fail (i32.const 4) (local.get $off)))))
-      (local.set $sfnt (i32.add (local.get $font) (local.get $off))))
-    (else
-      (if (i32.ne (local.get $face) (i32.const 0))
-        (then (return (call $fm_fail (i32.const 2) (local.get $face)))))
-      (local.set $sfnt (local.get $font))))
+  (local.set $sfnt
+    (call $fm_select_face (local.get $font) (local.get $flen) (local.get $face)))
+  (if (i32.ne (global.get $fm_error) (i32.const 0))
+    (then (return (global.get $fm_error))))
   (i32.store (local.get $result) (local.get $groups))
   (local.set $needhhea (i32.const 10))
   (if (i32.ne (i32.and (local.get $groups) (i32.const 2)) (i32.const 0))

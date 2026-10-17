@@ -12,6 +12,7 @@ const expected = new Set([
   "src/font-metrics-runtime.watpart",
   "src/font-metrics-abi.watpart",
   "src/font-metrics-reader.watpart",
+  "src/font-metrics-math.watpart",
   "docs/abi.md",
   "docs/composition.md",
   "docs/legal/wat-assembler.md",

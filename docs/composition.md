@@ -6,6 +6,7 @@ uses, in order:
 1. `font-metrics-runtime.watpart`
 2. `font-metrics-abi.watpart`
 3. `font-metrics-reader.watpart`
+4. `font-metrics-math.watpart`
 
 The consumer declares one memory before these parts. The parts require the
 symbol `memory`, reserve zero scratch bytes, do not allocate, do not call
